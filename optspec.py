@@ -22,7 +22,7 @@ class OptionSpec:
             increment   = 1):
         
         self.name = name
-        self.param = param or required or multi
+        self.param = param or required or multi or default
         self.required = required
         self.additive = additive and not multi
         self.multi = multi
