@@ -134,3 +134,38 @@ class Options:
 
         return optmap, args
 
+#--------------------------------------------------------------------
+class SubcommandMap:
+    def __init__(self):
+        self.fmap = {}
+        self.default = None
+
+    def define(self, name, default = False):
+        def define_impl(f):
+            self.fmap[name] = f
+            if default:
+                if self.default is None:
+                    self.default = name
+                else:
+                    raise ValueError('Cannot have multiple default subcommands, "%s" is already defined as the default subcommand.' % self.default)
+            return f
+        return define_impl
+
+    def get(self, name):
+        if not name in self.fmap:
+            raise ValueError('Subcommand "%s" does not exist in the SubcommandMap.' % name)
+        return self.fmap[name]
+
+    def invoke(self, argv = sys.argv):
+        argv = argv[:]
+        pname = argv.pop(0)
+        name = self.default
+
+        if len(argv) > 0 and argv[0] in self.fmap:
+            name = argv.pop(0)
+        
+        if name is None:
+            raise ValueError('No default subcommand defined and no subcommand was provided in the argument list.')
+
+        return self.fmap[name]([pname] + argv)
+
