@@ -6,6 +6,10 @@ and enforcement of required parameters.  I wrote this because I enjoy the
 simplicity of getopt.getopt(), but dislike the duplication involved in
 interpreting its results into variables or settings.
 
+Change Log
+==========
+May 1 2016 (v0.5): Added ability to pass arbitrary parameters into SubcommandMap.invoke().
+
 Option Specifications: The `Option.opt()` Function
 ==================================================
 The `opt()` function accepts a series of option forms, and keyword arguments

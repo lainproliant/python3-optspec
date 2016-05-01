@@ -156,7 +156,12 @@ class SubcommandMap:
             raise ValueError('Subcommand "%s" does not exist in the SubcommandMap.' % name)
         return self.fmap[name]
 
-    def invoke(self, argv = sys.argv):
+    def invoke(self, *args, **kwargs):
+        argv = sys.argv
+        if 'argv' in kwargs:
+            argv = kwargs['argv']
+            del kwargs['argv']
+
         argv = argv[:]
         pname = argv.pop(0)
         name = self.default
@@ -167,5 +172,5 @@ class SubcommandMap:
         if name is None:
             raise ValueError('No default subcommand defined and no subcommand was provided in the argument list.')
 
-        return self.fmap[name]([pname] + argv)
+        return self.fmap[name]([pname] + argv, *args, **kwargs)
 
